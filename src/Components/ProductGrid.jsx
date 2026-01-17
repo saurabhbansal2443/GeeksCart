@@ -2,6 +2,7 @@ import React from "react";
 
 import { Star, User } from "lucide-react";
 import { useGetCourseData } from "../Hooks";
+import { Link } from "react-router-dom";
 
 const ProductGrid = () => {
   const courseData = useGetCourseData();
@@ -24,7 +25,10 @@ export default ProductGrid;
 
 const CourseCard = ({ course }) => {
   return (
-    <div className="bg-white border border-gray-200 rounded-lg overflow-hidden flex flex-col hover:shadow-md transition-shadow">
+    <Link
+      to={`/course/${course.id}`}
+      className="bg-white border border-gray-200 rounded-lg overflow-hidden flex flex-col hover:shadow-md transition-shadow"
+    >
       {/* Course Image */}
       <img
         src={course.image}
@@ -68,6 +72,6 @@ const CourseCard = ({ course }) => {
           </button>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
