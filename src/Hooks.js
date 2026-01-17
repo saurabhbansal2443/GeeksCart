@@ -31,3 +31,14 @@ export function useIsProductInCart(id) {
     return false;
   }
 }
+
+export function useIsProductInWishlist(id) {
+  const wishlistData = useSelector((store) => store.app.wishlist);
+  const wishlistArray = Object.keys(wishlistData);
+  const isPresent = wishlistArray.includes(id);
+  if (isPresent) {
+    return true;
+  } else {
+    return false;
+  }
+}

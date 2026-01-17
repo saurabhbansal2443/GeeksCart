@@ -1,6 +1,10 @@
 import React from "react";
 import Navbar from "../Components/Navbar";
-import { useGetCourseData, useIsProductInCart } from "../Hooks";
+import {
+  useGetCourseData,
+  useIsProductInCart,
+  useIsProductInWishlist,
+} from "../Hooks";
 import { useParams } from "react-router-dom";
 import {
   Star,
@@ -11,7 +15,12 @@ import {
   ShoppingCart,
 } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
-import { addToCart, removeFromCart } from "../Store/appSlice";
+import {
+  addToCart,
+  removeFromCart,
+  addToWishlist,
+  removeFromWishlist,
+} from "../Store/appSlice";
 const Course = () => {
   const dispatch = useDispatch();
   const cartData = useSelector((store) => store.app.cart);
@@ -21,12 +30,21 @@ const Course = () => {
   const { id: courseId } = useParams();
 
   const isCourseInCart = useIsProductInCart(courseId);
+  const isCourseInWishlist = useIsProductInWishlist(courseId);
 
   const handleAddToCart = (courseData) => {
     if (isCourseInCart) {
       dispatch(removeFromCart(courseData));
     } else {
       dispatch(addToCart(courseData));
+    }
+  };
+
+  const handleAddToWishlist = (courseData) => {
+    if (isCourseInCart) {
+      dispatch(removeFromWishlist(courseData));
+    } else {
+      dispatch(addToWishlist(courseData));
     }
   };
 
@@ -101,8 +119,14 @@ const Course = () => {
                 <ShoppingCart size={20} />{" "}
                 {isCourseInCart ? "Remove from Cart" : "Add to Cart"}
               </button>
-              <button className="w-full border border-gray-900 py-3 rounded-lg font-bold flex items-center justify-center gap-2 hover:bg-gray-50">
-                <Heart size={20} /> Wishlist
+              <button
+                onClick={() => {
+                  handleAddToWishlist(courseData);
+                }}
+                className="w-full border border-gray-900 py-3 rounded-lg font-bold flex items-center justify-center gap-2 hover:bg-gray-50"
+              >
+                <Heart size={20} />
+                {isCourseInWishlist ? "Remove from Wishlist" : "Wishlist"}
               </button>
             </div>
             <p className="text-xs text-center text-gray-500 mt-4">

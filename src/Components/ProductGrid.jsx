@@ -68,7 +68,7 @@ const CourseCard = ({ course }) => {
             ${course.price}
           </span>
           <button className="bg-blue-600 text-white px-3 py-1.5 rounded font-medium text-sm hover:bg-blue-700">
-            Add to Cart
+            Explore
           </button>
         </div>
       </div>
