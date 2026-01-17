@@ -1,7 +1,14 @@
 import React from "react";
+import Navbar from "../Components/Navbar";
+import ProductGrid from "../Components/ProductGrid";
 
 const Home = () => {
-  return <div>Home</div>;
+  return (
+    <div>
+      <Navbar />
+      <ProductGrid />
+    </div>
+  );
 };
 
 export default Home;

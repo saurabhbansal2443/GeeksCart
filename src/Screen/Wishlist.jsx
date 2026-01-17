@@ -1,11 +1,12 @@
-import React from 'react'
+import React from "react";
+import Navbar from "../Components/Navbar";
 
 const Wishlist = () => {
   return (
     <div>
-      Wishlist
+      <Navbar />
     </div>
-  )
-}
+  );
+};
 
-export default Wishlist
+export default Wishlist;

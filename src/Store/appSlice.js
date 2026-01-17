@@ -1,25 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  value: 0,
+  courses: [],
 };
 
 export const appSlice = createSlice({
   name: "app",
   initialState,
   reducers: {
-    increment: (state) => {
-      state.value += 1;
-    },
-    decrement: (state) => {
-      state.value -= 1;
-    },
-    incrementByAmount: (state, action) => {
-      state.value += action.payload;
+    setCourseData: (state, action) => {
+      state.courses = action.payload;
     },
   },
 });
 
-export const { increment, decrement, incrementByAmount } = appSlice.actions;
+export const { setCourseData } = appSlice.actions;
 
 export default appSlice.reducer;
