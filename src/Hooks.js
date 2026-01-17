@@ -20,3 +20,14 @@ export function useGetCourseData() {
   }, []);
   return courseData;
 }
+
+export function useIsProductInCart(id) {
+  const cartData = useSelector((store) => store.app.cart);
+  const cartArray = Object.keys(cartData);
+  const isPresent = cartArray.includes(id);
+  if (isPresent) {
+    return true;
+  } else {
+    return false;
+  }
+}

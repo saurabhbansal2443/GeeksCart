@@ -1,13 +1,35 @@
 import React from "react";
 import Navbar from "../Components/Navbar";
-import { useGetCourseData } from "../Hooks";
+import { useGetCourseData, useIsProductInCart } from "../Hooks";
 import { useParams } from "react-router-dom";
-import { Star, CheckCircle, Globe, Calendar, Heart, ShoppingCart } from "lucide-react";
-
+import {
+  Star,
+  CheckCircle,
+  Globe,
+  Calendar,
+  Heart,
+  ShoppingCart,
+} from "lucide-react";
+import { useSelector, useDispatch } from "react-redux";
+import { addToCart, removeFromCart } from "../Store/appSlice";
 const Course = () => {
+  const dispatch = useDispatch();
+  const cartData = useSelector((store) => store.app.cart);
+
+  console.log(cartData);
   const allCourseData = useGetCourseData();
   const { id: courseId } = useParams();
-  
+
+  const isCourseInCart = useIsProductInCart(courseId);
+
+  const handleAddToCart = (courseData) => {
+    if (isCourseInCart) {
+      dispatch(removeFromCart(courseData));
+    } else {
+      dispatch(addToCart(courseData));
+    }
+  };
+
   // Find the specific course based on the URL ID
   const courseData = allCourseData.find((data) => data.id == courseId);
 
@@ -23,19 +45,29 @@ const Course = () => {
       {/* Hero Section / Header */}
       <div className="bg-gray-900 text-white p-8 md:p-16">
         <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-8">
-          
           {/* Left Side: Course Info */}
           <div className="md:col-span-2">
-            <h1 className="text-3xl md:text-4xl font-bold mb-4">{courseData.title}</h1>
-            <p className="text-lg mb-4 text-gray-300">{courseData.description}</p>
-            
+            <h1 className="text-3xl md:text-4xl font-bold mb-4">
+              {courseData.title}
+            </h1>
+            <p className="text-lg mb-4 text-gray-300">
+              {courseData.description}
+            </p>
+
             <div className="flex flex-wrap items-center gap-4 text-sm mb-4">
               <div className="flex items-center gap-1 text-yellow-400">
                 <span className="font-bold">{courseData.rating}</span>
                 <Star size={16} fill="currentColor" />
               </div>
-              <span className="text-blue-400 font-medium">({courseData.studentsEnrolled} students)</span>
-              <span>Created by <span className="underline text-blue-300">{courseData.instructor}</span></span>
+              <span className="text-blue-400 font-medium">
+                ({courseData.studentsEnrolled} students)
+              </span>
+              <span>
+                Created by{" "}
+                <span className="underline text-blue-300">
+                  {courseData.instructor}
+                </span>
+              </span>
             </div>
 
             <div className="flex flex-wrap gap-4 text-sm">
@@ -52,18 +84,30 @@ const Course = () => {
 
           {/* Right Side: Action Box (Floating Card style) */}
           <div className="bg-white text-gray-900 p-6 rounded-xl border border-gray-200 shadow-xl self-start">
-            <img src={courseData.image} alt="Thumbnail" className="w-full rounded-lg mb-4" />
+            <img
+              src={courseData.image}
+              alt="Thumbnail"
+              className="w-full rounded-lg mb-4"
+            />
             <div className="text-3xl font-bold mb-4">₹{courseData.price}</div>
-            
+
             <div className="flex flex-col gap-3">
-              <button className="w-full bg-blue-600 text-white py-3 rounded-lg font-bold flex items-center justify-center gap-2 hover:bg-blue-700">
-                <ShoppingCart size={20} /> Add to Cart
+              <button
+                onClick={() => {
+                  handleAddToCart(courseData);
+                }}
+                className="w-full bg-blue-600 text-white py-3 rounded-lg font-bold flex items-center justify-center gap-2 hover:bg-blue-700"
+              >
+                <ShoppingCart size={20} />{" "}
+                {isCourseInCart ? "Remove from Cart" : "Add to Cart"}
               </button>
               <button className="w-full border border-gray-900 py-3 rounded-lg font-bold flex items-center justify-center gap-2 hover:bg-gray-50">
                 <Heart size={20} /> Wishlist
               </button>
             </div>
-            <p className="text-xs text-center text-gray-500 mt-4">30-Day Money-Back Guarantee</p>
+            <p className="text-xs text-center text-gray-500 mt-4">
+              30-Day Money-Back Guarantee
+            </p>
           </div>
         </div>
       </div>
@@ -71,7 +115,6 @@ const Course = () => {
       {/* Lower Section: Detailed Content */}
       <div className="max-w-6xl mx-auto p-8 grid md:grid-cols-3 gap-8">
         <div className="md:col-span-2">
-          
           {/* What you'll learn */}
           <div className="border border-gray-200 p-6 rounded-lg mb-8">
             <h2 className="text-2xl font-bold mb-4">What you'll learn</h2>
@@ -94,7 +137,6 @@ const Course = () => {
               ))}
             </ul>
           </div>
-
         </div>
       </div>
     </div>
